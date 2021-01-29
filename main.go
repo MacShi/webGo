@@ -23,6 +23,7 @@
       	apis.Post("/login",control.Login)
       	apis.Get("/logout",control.LogOut)
       	apis.Get("/testlogin", control.TestLogin)
+      	apis.Post("/register",control.Register)
 	 }
 
  }
@@ -30,7 +31,7 @@
         app := iris.New()
         app.Use(recover.New())
         app.Use(logger.New())
-        app.Logger().SetLevel("debug")
+        app.Logger().SetLevel("info")
         router(app)
         app.Run(iris.Addr(":8086"), iris.WithoutInterruptHandler)
         fmt.Println("aa",config.Conf.Get("app.host").(string))

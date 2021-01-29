@@ -1,6 +1,7 @@
 package model
 
 type UserLogin struct {
-	Name string `json:"name"`
-	Password string `json:"password"`
+	Id   int `json:"id"`
+	UserName string	`json:"user_name"`
+	Pwd string `json:"pwd"`
 }

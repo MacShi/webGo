@@ -12,16 +12,39 @@ var (
 	sess                   = sessions.New(sessions.Config{Cookie: cookieNameForSessionID})
 
 )
+
+func Register(ctx iris.Context)  {
+	loginInfo := model.UserLogin{}
+	err:=ctx.ReadJSON(&loginInfo)
+	if nil!=err{
+		ctx.JSON(utils.ResultUtil.Failure(err.Error()))
+	}else {
+		a,err := service.Register(loginInfo)
+		if nil!=err{
+			ctx.JSON(utils.ResultUtil.Failure(err.Error()))
+		}else {
+			ctx.JSON(utils.ResultUtil.Success(a))
+		}
+
+	}
+
+}
+
+
 func Login(ctx iris.Context)  {
 	session := sess.Start(ctx)
 	session.Set("authenticated",true)
-	loginInfo1 := model.UserLogin{}
-	err:=ctx.ReadJSON(&loginInfo1)
+	loginInfo := model.UserLogin{}
+	err:=ctx.ReadJSON(&loginInfo)
 	if err!=nil{
 		ctx.JSON(utils.ResultUtil.Failure(err.Error()))
 	}else {
-		aa,_:=service.UserLogin(loginInfo1)
-		ctx.JSON(utils.ResultUtil.Success(aa))
+		aa,err:=service.UserLogin(loginInfo)
+		if nil!=err{
+			ctx.JSON(utils.ResultUtil.Failure(err.Error()))
+		}else {
+			ctx.JSON(utils.ResultUtil.Success(aa))
+		}
 	}
 }
 
